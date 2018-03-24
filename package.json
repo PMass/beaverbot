@@ -1,0 +1,11 @@
+{
+  "name": "beaver-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "author": "graedr",
+  "dependencies": {
+    "request": "^2.85.0",
+    "discord.js": "^11.3.2"
+  }
+}
