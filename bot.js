@@ -119,7 +119,7 @@ function Bot (config) {
           that.live = false;
         }
       });
-      setTimeout(() => that.pollStream(), 15000);
+      setTimeout(() => that.pollStream(), 120000);
     }
   }
   

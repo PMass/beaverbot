@@ -1,4 +1,4 @@
-const Config = require('./config1.json');
+const Config = require('./config.json');
 const Roles = require('./roles.js');
 const Auth = require('./auth.json');
 const Bot = require('./bot.js');
