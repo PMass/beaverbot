@@ -9,19 +9,19 @@ The current behavior is very basic, as this was written for a specific purpose. 
 - `config.json`
 - `roles.js`
 
-`auth.json` should be populated with a Discord application token:
+`auth.json` should be populated with Discord application token and Twitch client ID:
 
 ```
 {
-   "token": "<discord app token here>"
+   "token": "<discord app token here>",
+   "clientID": "<twitch client ID>"
 }
 ```
 
-`config.json` should be populated with a twitch client ID, Discord channel and user ID's to capture the trigger, and a channel to modify:
+`config.json` should be populated with a Discord channel ID and user ID to trigger the behavior, and a channel to be modified by the behavior:
 
 ```
 {
-   "clientID": "<twitch client ID>",
    "triggerChannel": "<Discord trigger channel ID>",
    "triggerUser": "<Discord trigger user ID>",
    "muteChannel": "<Discord modify channel ID>"

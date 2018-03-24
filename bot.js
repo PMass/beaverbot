@@ -20,7 +20,7 @@ function Bot (config) {
     baseUrl: 'https://api.twitch.tv/kraken/',
     headers: {
       Accept: 'application/vnd.twitchtv.v5+json',
-      'Client-ID': that.config.clientID
+      'Client-ID': that.auth.clientID
     },
     json: true
   };
