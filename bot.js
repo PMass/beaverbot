@@ -31,9 +31,12 @@ function Bot (config) {
     let guilds = that.client.guilds;
     guilds.forEach(function(g) {
       guild = g;
+      let channel = guild.channels.find('id', that.config.modifyChannel);
+      if(channel) {
+        console.log("I am ready!");
+        that.channel = channel;
+      }
     });
-    that.channel = guild.channels.find('id', that.config.modifyChannel);
-    console.log("I am ready!");
   }
   
   that.verify = (message) => {
