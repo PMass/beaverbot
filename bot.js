@@ -14,6 +14,7 @@ function Bot (config) {
   that.channel = {};
   that.roles = [];
   that.streamID = 0;
+  that.guild = 0;
   that.client = new Discord.Client();
   
   that.krakenDefaults = {
@@ -28,15 +29,12 @@ function Bot (config) {
   that.kraken = request.defaults(that.krakenDefaults);
   
   that.init = () => {
-    let guilds = that.client.guilds;
-    guilds.forEach(function(g) {
-      guild = g;
-      let channel = guild.channels.find('id', that.config.modifyChannel);
-      if(channel) {
-        console.log("I am ready!");
-        that.channel = channel;
-      }
-    });
+    that.getChannel();
+    if (that.channel) {
+      console.log("I am ready!");
+    } else {
+      console.log("Channel not found!");
+    }
   }
   
   that.verify = (message) => {
@@ -59,12 +57,23 @@ function Bot (config) {
     });
   }
   
+  that.getChannel = () => {
+    that.client.guilds.forEach(function(g) {
+      guild = g;
+      let channel = guild.channels.find('id', that.config.modifyChannel);
+      if (channel) {
+        that.channel = channel;
+        that.guild = guild;
+      }
+    });
+  }
+  
   that.respond = (message) => {
     that.getUser(that.streamName, (err, data) => {
       if (err) {
         console.log('ERR', err);
       }	else {
-        that.roles = message.guild.roles;
+        that.roles = that.guild.roles;
         that.streamID = data._id;
         that.getStream(that.streamID, (err, stream, channel) => {
           if (err) {
