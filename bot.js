@@ -12,9 +12,9 @@ function Bot (config) {
   that.token = that.auth.token;
   that.live = false;
   that.channel = {};
+  that.guild = {};
   that.roles = [];
   that.streamID = 0;
-  that.guild = 0;
   that.client = new Discord.Client();
   
   that.krakenDefaults = {
@@ -80,11 +80,11 @@ function Bot (config) {
             console.log('ERR', err);
           } else if (stream == null) {
             console.log(that.streamName + ' is not live');
-            that.setAllRoles(true);
+            that.modifyRoles(true);
             that.live = false;
           } else if (!that.live) {
             console.log(that.streamName + ' is live');
-            that.setAllRoles(false);
+            that.modifyRoles(false);
             that.live = true;
             that.pollStream();
           }
@@ -106,10 +106,9 @@ function Bot (config) {
     });
   }
   
-  that.setAllRoles = (toggle) => {
-    that.Roles.forEach(function(role) {
-      let role_t = that.roles.find('name', role);
-      if (role_t) {
+  that.modifyRoles = (toggle) => {
+    that.roles.forEach(function(role_t) {
+      if (role_t && role_t.name != 'Mods') {
         that.channel.overwritePermissions(
           role_t, 
           {'SEND_MESSAGES': toggle}, 
@@ -127,7 +126,7 @@ function Bot (config) {
           console.log('ERR', err);
         } else if (stream == null) {
           console.log(that.streamName + ' is not live');
-          that.setAllRoles(true);
+          that.modifyRoles(true);
           that.live = false;
         }
       });
