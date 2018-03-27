@@ -107,10 +107,10 @@ function Bot (config) {
   }
   
   that.modifyRoles = (toggle) => {
-    that.roles.forEach(function(role_t) {
-      if (role_t && role_t.name != 'Mods') {
+    that.roles.forEach(function(role) {
+      if (role && role.name != 'Mods') {
         that.channel.overwritePermissions(
-          role_t, 
+          role, 
           {'SEND_MESSAGES': toggle}, 
           that.streamName + ' has gone live!'
         )
