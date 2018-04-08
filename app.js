@@ -9,6 +9,7 @@ bot = new Bot(config);
 
 bot.client.on("ready", () => {
   bot.init();
+  bot.respond();
 });
 
 bot.client.on("message", (message) => {
