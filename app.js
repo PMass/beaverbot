@@ -1,9 +1,8 @@
 const Config = require('./config.json');
-const Roles = require('./roles.js');
 const Auth = require('./auth.json');
 const Bot = require('./bot.js');
 
-const config = { Config: Config, Roles: Roles, Auth: Auth };
+const config = { Config: Config, Auth: Auth };
 
 bot = new Bot(config);
 

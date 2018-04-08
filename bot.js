@@ -4,7 +4,6 @@ const Discord = require('discord.js');
 function Bot (config) {
   let that = {};
   
-  that.Roles = config.Roles;
   that.auth = config.Auth;
   that.config = config.Config;
   
