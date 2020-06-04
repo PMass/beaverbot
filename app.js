@@ -11,9 +11,18 @@ bot.client.on("ready", () => {
   bot.respond();
 });
 
-bot.client.on("message", (message) => {
-  if (bot.verify(message)) {
-    bot.respond(message);
+bot.client.on("presenceUpdate", (oldMember, newMember) => {
+  if (!bot.verify(newMember)) {
+    return;
+  }
+  
+  if (!bot.channel) {
+    console.log("Target channel not found, taking no action.");
+    return;
+  }
+
+  if (bot.getStreamingStatus(oldMember, newMember)) {
+    bot.respond();
   }
 });
 

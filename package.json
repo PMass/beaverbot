@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "author": "graedr",
+  "author": "codywill",
   "dependencies": {
-    "request": "^2.85.0",
-    "discord.js": "^11.3.2"
+    "discord.js": "^11.3.2",
+    "request": "^2.85.0"
   }
 }

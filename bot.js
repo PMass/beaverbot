@@ -36,10 +36,32 @@ function Bot (config) {
     }
   }
   
-  that.verify = (message) => {
-    return (message.channel.id === that.config.triggerChannel 
-    && message.author.id === that.config.triggerUser);
-  } 
+  that.verify = (member) => {
+    //console.log(member.id, member.id === that.config.triggerUser ? '=' : '!', '=', that.config.triggerUser);
+    return (member.id === that.config.triggerUser);
+  }
+  
+  that.getActivity = (member) => {
+    if (member.presence.game)
+      return [member.presence.game.streaming ? 'streaming' : 'playing', member.presence.game.name];
+    return [null, null];
+  }
+  
+  that.getStreamingStatus = (oldMember, newMember) => {
+    let [member, update, activity, game] = [null, null, null, null];
+    if (newMember.presence.game) {
+      update = 'has started';
+      member = newMember;
+    } else if (oldMember.presence.game) {
+      update = 'has stopped';
+      member = oldMember;
+    } else {
+      return;
+    }
+    [activity, game] = that.getActivity(member);
+    console.log(member.user.username, update, activity, game);
+    return (activity === 'streaming');
+  }
   
   that.getUser = (username, callback) => {
     return that.kraken({
@@ -72,9 +94,7 @@ function Bot (config) {
       if (err) {
         console.log('ERR', err);
       }	else {
-        that.roles = that.guild.roles;
-        that.streamID = data._id;
-        that.getStream(that.streamID, (err, stream, channel) => {
+        that.getStream(data._id, (err, stream, channel) => {
           if (err) {
             console.log('ERR', err);
           } else if (stream == null) {
@@ -85,7 +105,6 @@ function Bot (config) {
             console.log(that.streamName + ' is live');
             that.modifyRoles(false);
             that.live = true;
-            that.pollStream();
           }
         });
       }
@@ -117,23 +136,7 @@ function Bot (config) {
       }
     });
   }
-
-  that.pollStream = () => {
-    if (that.live) {
-      that.getStream(that.streamID, (err, stream) => {
-        if (err) {
-          console.log('ERR', err);
-        } else if (stream == null) {
-          console.log(that.streamName + ' is not live');
-          that.modifyRoles(true);
-          that.live = false;
-        }
-      });
-      setTimeout(() => that.pollStream(), 120000);
-    }
-  }
   
   return that;
 }
-
 exports = module.exports = Bot;
