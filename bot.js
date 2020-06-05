@@ -47,7 +47,7 @@ function Bot (config) {
     return [null, null];
   }
   
-  that.getStreamingStatus = (oldMember, newMember) => {
+  that.getMemberUpdate = (oldMember, newMember) => {
     let [member, update, activity, game] = [null, null, null, null];
     if (newMember.presence.game) {
       update = 'has started';
@@ -60,7 +60,7 @@ function Bot (config) {
     }
     [activity, game] = that.getActivity(member);
     console.log(member.user.username, update, activity, game);
-    return (activity === 'streaming');
+    return [member, update, activity, game];
   }
   
   that.getUser = (username, callback) => {
@@ -89,22 +89,25 @@ function Bot (config) {
     });
   }
   
-  that.respond = (message) => {
+  that.respond = (update) => {
     that.getUser(that.streamName, (err, data) => {
       if (err) {
         console.log('ERR', err);
       }	else {
-        that.getStream(data._id, (err, stream, channel) => {
+        that.getStream(data._id, (err, stream) => {
           if (err) {
             console.log('ERR', err);
-          } else if (stream == null) {
+          } else if (stream == null) { 
             console.log(that.streamName + ' is not live');
             that.modifyRoles(true);
             that.live = false;
-          } else if (!that.live) {
+          } else if (!that.live && update == 'has started') { 
             console.log(that.streamName + ' is live');
             that.modifyRoles(false);
             that.live = true;
+          } else if (update == 'has stopped') {
+            console.log(that.streamName + ' might be live?');
+            setTimeout(() => that.respond(update), 120000);
           }
         });
       }
