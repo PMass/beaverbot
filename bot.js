@@ -125,7 +125,7 @@ function Bot (config) {
   }
   
   that.modifyRoles = (toggle) => {
-    that.roles.forEach(function(role) {
+    that.guild.roles.forEach(function(role) {
       if (role && role.name != 'Mods') {
         that.channel.overwritePermissions(
           role, 
