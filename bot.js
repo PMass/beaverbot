@@ -37,7 +37,7 @@ function Bot (config) {
   }
   
   that.verify = (member) => {
-    //console.log(member.id, member.id === that.config.triggerUser ? '=' : '!', '=', that.config.triggerUser);
+    console.log(member.id, member.id === that.config.triggerUser ? '=' : '!', '=', that.config.triggerUser);
     return (member.id === that.config.triggerUser);
   }
   
@@ -56,7 +56,7 @@ function Bot (config) {
       update = 'has stopped';
       member = oldMember;
     } else {
-      return;
+      return [member, update, activity, game];
     }
     [activity, game] = that.getActivity(member);
     console.log(member.user.username, update, activity, game);
@@ -101,13 +101,15 @@ function Bot (config) {
             console.log(that.streamName + ' is not live');
             that.modifyRoles(true);
             that.live = false;
-          } else if (!that.live && update == 'has started') { 
+          } else if ((!that.live && update == 'has started') || (stream.stream_type == 'live')) { 
             console.log(that.streamName + ' is live');
             that.modifyRoles(false);
             that.live = true;
           } else if (update == 'has stopped') {
             console.log(that.streamName + ' might be live?');
             setTimeout(() => that.respond(update), 120000);
+          } else {
+            console.log(stream, update);
           }
         });
       }
